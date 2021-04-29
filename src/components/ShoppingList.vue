@@ -2,11 +2,11 @@
   <div class="box">
     <h1 class="title is-1">Shopping List</h1>
     <div class="columns is-centered">
-      <ShoppingForm @add:item="addItem"/>
+      <ShoppingForm @add:item="addItem" />
     </div>
       
     <div class="columns is-centered">
-      <ShoppingTable :items="items"/>
+      <ShoppingTable :items="items" @remove:item="removeItem"/>
     </div>
   </div>
 </template>
@@ -39,6 +39,10 @@ export default {
   methods:{
     addItem(item) {
       this.items = [...this.items, item.name];
+      localStorage.setItem('shoppingList', JSON.stringify(this.items))
+    },
+    removeItem(item) {
+      this.items.splice(this.items.indexOf(item),1),
       localStorage.setItem('shoppingList', JSON.stringify(this.items))
     }
   }

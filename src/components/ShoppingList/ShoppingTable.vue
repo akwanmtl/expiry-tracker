@@ -9,10 +9,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in items" :key="item-id"> 
+        <tr v-for="(item, index) in items" :key="index"> 
           <td class="list-space">
             <div>{{item}}</div>
-            <button class="button is-primary">-</button>
+            <button @click="$emit('remove:item', item)" class="button is-primary">-</button>
           </td>
         </tr>
       </tbody>
