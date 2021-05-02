@@ -9,10 +9,10 @@
             </b-navbar-item>
         </template>
         <template #end>
-            <b-navbar-item href="#">
+            <b-navbar-item href="/">
                 Expiry Tracker
             </b-navbar-item>
-            <b-navbar-item href="#">
+            <b-navbar-item href="/shopping">
                 Shopping List
             </b-navbar-item>
             <b-navbar-item href="#">
@@ -22,3 +22,9 @@
 
     </b-navbar>
 </template>
+
+<script>
+  export default {
+    name: 'Header'
+  }
+</script>
