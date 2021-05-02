@@ -6,7 +6,7 @@
     </div>
       
     <div class="columns is-centered">
-      <ExpiryTable :items="items" @remove:item="removeItem"/>
+      <ExpiryTable :items="items" @remove:item="removeItem" @addShopping:item="addToCart"/>
     </div>
   </div>
 </template>
@@ -52,6 +52,18 @@ export default {
     removeItem(item) {
       this.items.splice(this.items.indexOf(item),1),
       localStorage.setItem('expiryList', JSON.stringify(this.items))
+    },
+    addToCart(item) {
+      console.log(item)
+      let shopping = [];
+      if(localStorage.getItem('shoppingList')){
+        shopping = JSON.parse(localStorage.getItem('shoppingList'))
+      }
+      if(!shopping.includes(item.name)) {
+        shopping.push(item.name);
+        localStorage.setItem('shoppingList', JSON.stringify(shopping));
+      }
+      this.removeItem(item);
     }
   }
 }
