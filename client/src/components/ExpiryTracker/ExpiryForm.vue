@@ -10,13 +10,28 @@
           </b-input>
         </b-field>
         <b-field>
+          <b-select 
+            placeholder="Select Kitchen Location" 
+            expanded
+            v-model="item.location"
+            selected=null
+          >
+            <option value="Pantry">Pantry</option>
+            <option value="Fridge">Fridge</option>
+            <option value="Freezer">Freezer</option>
+            <option value="Counter">Counter</option>
+          </b-select>
+        </b-field>
+        <b-field>
           <b-datepicker
-              v-model="item.date"
+              v-model="item.expiryDate"
               placeholder="Set Expiration Date"
+              :min-date="minDate"
               icon="calendar-today"
               trap-focus>
           </b-datepicker>
         </b-field>
+        
         <div class="is-flex is-flex-direction-row-reverse">
           <button class="button is-info">
             Add Item
@@ -34,17 +49,20 @@
       return{
         item: {
           name: '',
-          date: []
-        },  
+          expiryDate: [], 
+          location: null
+        },
+        minDate: new Date()  
       }
     },
     methods: {
       handleSubmit() {
-        if(this.item.name.trim() !== "" && this.item.date){
+        if(this.item.name.trim() !== "" && this.item.expiryDate && this.item.location){
           this.$emit('add:item', this.item)
           this.item = {
             name: '',
-            date: []
+            expiryDate: [],
+            location: null
           }
         }
       },

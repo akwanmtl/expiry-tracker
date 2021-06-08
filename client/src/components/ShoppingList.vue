@@ -16,12 +16,6 @@ import ShoppingForm from './ShoppingList/ShoppingForm.vue'
 import ShoppingTable from './ShoppingList/ShoppingTable.vue' 
 
 let items = [];
-if(localStorage.getItem('shoppingList')){
-  items = JSON.parse(localStorage.getItem('shoppingList'))
-}
-else{
-  localStorage.setItem('shoppingList', JSON.stringify(items))
-}
 
 export default {
   name: 'ShoppingList',
@@ -36,10 +30,22 @@ export default {
       ]
     }
   },
+  mounted(){
+    this.$store.dispatch('getFoods')
+      .then(() => {
+        this.items = this.$store.getters.getFoods.filter(food =>{
+          return food.location === 'Shopping'
+        });        
+      })
+  },
   methods:{
     addItem(item) {
-      this.items = [...this.items, item.name];
-      localStorage.setItem('shoppingList', JSON.stringify(this.items))
+      this.$store.dispatch('addFood', {item})
+        .then(() => 
+          this.items = this.$store.getters.getFoods.filter(food =>{
+            return food.location === 'Shopping'
+          })   
+        )
     },
     removeItem(item) {
       this.items.splice(this.items.indexOf(item),1),

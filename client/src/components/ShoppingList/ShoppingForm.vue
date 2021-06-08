@@ -23,6 +23,8 @@
       return{
         item: {
           name: '',
+          expiryDate: new Date(),
+          location: 'Shopping'
         },  
       }
     },
@@ -32,6 +34,8 @@
           this.$emit('add:item', this.item)
           this.item = {
             name: '',
+            expiryDate: new Date(),
+            location: 'Shopping'
           }
         }
       },

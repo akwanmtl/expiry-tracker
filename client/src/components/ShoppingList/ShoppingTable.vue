@@ -11,7 +11,7 @@
       <tbody>
         <tr v-for="(item, index) in items" :key="index"> 
           <td class="list-space">
-            <div>{{item}}</div>
+            <div>{{item.name}}</div>
             <button @click="$emit('remove:item', item)" class="button is-primary">-</button>
           </td>
         </tr>

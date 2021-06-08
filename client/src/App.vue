@@ -1,19 +1,16 @@
 <template>
   <div id="app">
     <Header />
-    <!-- <ShoppingList msg="Welcome to Your Vue.js App"/> -->
     <router-view />
   </div>
 </template>
 
 <script>
 import Header from './components/Header.vue'
-// import ShoppingList from './components/ShoppingList.vue'
 
 export default {
   name: 'App',
   components: {
-    // ShoppingList, 
     Header
   }
 }

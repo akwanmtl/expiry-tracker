@@ -36,34 +36,33 @@ export default {
       ]
     }
   },
+  mounted(){
+    this.$store.dispatch('getFoods')
+      .then(() => {
+        this.items = this.$store.getters.getFoods.filter(food =>{
+          return food.location !== 'Shopping'
+        });        
+      })
+  },
   methods:{
     addItem(item) {
-      let i;
-      let tempItemsArry = [...this.items]
-      for(i = 0; i < tempItemsArry.length; i++){
-        if(Date.parse(tempItemsArry[i].date) > Date.parse(item.date)) break;
-      } 
-      if(tempItemsArry.length !== i) tempItemsArry.splice(i,0,item);
-      else tempItemsArry.push(item);
-      
-      this.items = [...tempItemsArry];
-      localStorage.setItem('expiryList', JSON.stringify(this.items))
+      this.$store.dispatch('addFood', {item})
+        .then(() => 
+          this.items = this.$store.getters.getFoods.filter(food =>{
+            return food.location !== 'Shopping'
+          })   
+        )
     },
     removeItem(item) {
-      this.items.splice(this.items.indexOf(item),1),
-      localStorage.setItem('expiryList', JSON.stringify(this.items))
+      let removed = this.items.splice(this.items.indexOf(item),1);
+      let id = removed[0]._id;
+      this.$store.dispatch('deleteFood', id)
+      console.log(id)
     },
     addToCart(item) {
       console.log(item)
-      let shopping = [];
-      if(localStorage.getItem('shoppingList')){
-        shopping = JSON.parse(localStorage.getItem('shoppingList'))
-      }
-      if(!shopping.includes(item.name)) {
-        shopping.push(item.name);
-        localStorage.setItem('shoppingList', JSON.stringify(shopping));
-      }
-      this.removeItem(item);
+      let removed = this.items.splice(this.items.indexOf(item),1);
+      this.$store.dispatch('updateFood', removed[0])
     }
   }
 }

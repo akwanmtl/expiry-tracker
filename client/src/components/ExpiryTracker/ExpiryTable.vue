@@ -10,6 +10,9 @@
             Time Left
           </th>
           <th>
+            Location
+          </th>
+          <th>
             Action
           </th>
         </tr>
@@ -20,7 +23,10 @@
             <div>{{item.name}}</div>
           </td>
           <td class="">
-            <div>{{convertDate(item.date)}}</div>
+            <div>{{convertDate(item.expiryDate)}}</div>
+          </td>
+          <td class="">
+            <div>{{item.location}}</div>
           </td>
           <td class="space-list">
             <button @click="$emit('remove:item', item)" class="button is-primary"><b-icon icon="delete"></b-icon></button>
