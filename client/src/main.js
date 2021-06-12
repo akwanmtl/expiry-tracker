@@ -22,7 +22,7 @@ router.beforeEach((to, from, next) =>{
   if(requiresAuth) {
     if(!store.getters.isLoggedIn) {
       console.log('not logged in', store.state.user)
-      next('/login')
+      next('/welcome')
     }
     else{
       console.log('logged in', store.state.user)

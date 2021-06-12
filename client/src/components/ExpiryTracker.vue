@@ -77,5 +77,6 @@ h1 {
   margin-top: 40px;
   margin-right: 40px;
   margin-left: 40px;
+  min-height: 100%;
 }
 </style>

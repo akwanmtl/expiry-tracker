@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <Header />
-    <router-view />
+    <div class="fill-height">
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -27,6 +29,10 @@ export default {
 
 body{
   min-height: 100vh;
-  background-color:mistyrose;
+  background-color:#33CC66;
+}
+
+.fill-height {
+  min-height: 100vh;
 }
 </style>

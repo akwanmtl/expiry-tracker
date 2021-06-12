@@ -25,8 +25,8 @@ export default {
             label: 'Your Stats',
             data: this.data,
             backgroundColor: [
-              'rgb(255, 99, 132)',
-              'rgb(54, 162, 235)',
+              '#4B81B4',
+              '#B47E4B',
             ],
             hoverOffset: 4
           }]

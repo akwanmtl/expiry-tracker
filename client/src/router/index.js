@@ -5,6 +5,7 @@ import ExpiryTracker from '../components/ExpiryTracker.vue';
 import Stats from '../components/Stats.vue';
 import Login from '../components/Login.vue';
 import SignUp from '../components/SignUp.vue';
+import Landing from '../components/Landing.vue';
 
 Vue.use(VueRouter);
 
@@ -46,6 +47,14 @@ const routes = [
     path: "/signup",
     name: "SignUp",
     component: SignUp,
+    meta: {
+      guest: true
+    }
+  },
+  {
+    path: "/welcome",
+    name: "Landing",
+    component: Landing,
     meta: {
       guest: true
     }

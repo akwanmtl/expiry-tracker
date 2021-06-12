@@ -30,17 +30,17 @@ const store = new Vuex.Store({
       state.foods = []
     },
     get_food(state,foods){
-      state.foods = foods; 
+      if(state.foods.length === 0) state.foods = foods; 
       if(state.finished === 0) state.finished = state.user.finished;
       if(state.expired === 0) state.expired = state.user.expired + foods.filter(food =>{
         const foodExpiry = new Date(food.expiryDate)
         return food.location !== 'Shopping' && foodExpiry < new Date()
       }).length;
-      console.log('state.finished', state.finished)
     },
     add_food(state,food){
       state.foods = [...state.foods, food];
       state.purchaseName = "";
+      console.log(state.foods)
     },
     delete_food(state,id){
       let removedFood = state.foods.filter(food => food._id === id)[0];
@@ -50,17 +50,19 @@ const store = new Vuex.Store({
         if(expiryDate >= new Date()) state.finished = state.finished  + 1;
         else state.expired  = state.expired + 1;
       }
-      console.log('finished food', state.finished)
-      console.log('expired food', state.expired)
     },
     update_food(state,id){
+      console.log(state.foods, id)
       let unchangedFoods = state.foods.filter(food => food._id !== id);
       let changedFood = state.foods.filter(food => food._id === id)[0];
+      console.log('changed', changedFood)
       changedFood.location = "Shopping"
       state.foods = [...unchangedFoods, changedFood]
       let expiryDate = new Date(changedFood.expiryDate)
       if(expiryDate >= new Date()) state.finished = state.finished  + 1;
       else state.expired = state.expired + 1;
+      console.log('finished food', state.finished)
+      console.log('expired food', state.expired)
     },
     purchase_food(state,name){
       state.purchaseName = name
@@ -146,7 +148,6 @@ const store = new Vuex.Store({
         axios({url: 'http://localhost:3001/api/food', data: food, method: 'POST' , withCredentials: true, credentials: 'include'})
         .then(response => {
           const food = response.data
-          console.log('food', food)
           commit('add_food', food)
           resolve(response)
         })
@@ -158,12 +159,9 @@ const store = new Vuex.Store({
     },
     deleteFood({commit}, id) {
       commit('auth_request')
-      console.log('delete food', id)
       return new Promise((resolve, reject) => {
         axios({url: 'http://localhost:3001/api/food/'+id, method: 'DELETE' , withCredentials: true, credentials: 'include'})
         .then(response => {
-          const food = response.data
-          console.log('food', food)
           commit('delete_food', id)
           resolve(response)
         })
@@ -175,14 +173,11 @@ const store = new Vuex.Store({
     },
     updateFood({commit}, food) {
       commit('auth_request')
-      console.log('updating food', food)
       let foodExpiry = new Date(food.expiryDate);
       let expired = (foodExpiry < new Date());
       return new Promise((resolve, reject) => {
         axios({url: 'http://localhost:3001/api/food/'+food._id, data: {location: "Shopping", expiryDate: new Date(), expired: expired}, method: 'PUT' , withCredentials: true, credentials: 'include'})
         .then(response => {
-          const food = response.data
-          console.log('food', food)
           commit('update_food', food._id)
           resolve(response)
         })
@@ -193,9 +188,7 @@ const store = new Vuex.Store({
       })
     },
     purchaseFood({commit}, name){
-      console.log('purchase food', name)
       commit('purchase_food',name)
-      console.log('purchase food', this.state.purchaseName)
       return this.state.purchaseName
     }
   },
