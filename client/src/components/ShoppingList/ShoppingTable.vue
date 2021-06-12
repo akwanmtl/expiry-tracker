@@ -6,13 +6,19 @@
           <th>
             Grocery Item
           </th>
+          <th>
+            Action
+          </th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(item, index) in items" :key="index"> 
-          <td class="list-space">
+          <td>
             <div>{{item.name}}</div>
-            <button @click="$emit('remove:item', item)" class="button is-primary">-</button>
+          </td>
+          <td class="list-space">
+            <button @click="$emit('purchase:item', item)" class="button is-primary"><b-icon icon="fridge"></b-icon></button>
+            <button @click="$emit('remove:item', item)" class="button is-primary"><b-icon icon="delete"></b-icon></button>
           </td>
         </tr>
       </tbody>
@@ -32,7 +38,7 @@ export default {
 <style scoped>
 .list-space{
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 .list-space div {
   line-height: 40px;
@@ -40,5 +46,7 @@ export default {
 
 .list-space button {
   height: 40px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 </style>

@@ -40,11 +40,18 @@ router.beforeEach((to, from, next) =>{
   }
 })
 
-new Vue({
-  router,
-  store,
-  beforeCreate() { this.$store.dispatch('getUser') },
-  render: h => h(App)
-}).$mount('#app')
+store
+  .dispatch('getUser')
+  .then(()=>{
+    new Vue({
+      router,
+      store,
+      render: h => h(App)
+    }).$mount('#app')
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
+
 
 

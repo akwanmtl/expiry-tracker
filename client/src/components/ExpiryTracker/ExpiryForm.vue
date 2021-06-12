@@ -6,7 +6,8 @@
             v-model="item.name" 
             type="text" 
             placeholder="Enter Grocery Item"
-            icon="food-apple">
+            icon="food-apple"
+            required>
           </b-input>
         </b-field>
         <b-field>
@@ -15,6 +16,7 @@
             expanded
             v-model="item.location"
             selected=null
+            required
           >
             <option value="Pantry">Pantry</option>
             <option value="Fridge">Fridge</option>
@@ -28,7 +30,8 @@
               placeholder="Set Expiration Date"
               :min-date="minDate"
               icon="calendar-today"
-              trap-focus>
+              trap-focus
+              required>
           </b-datepicker>
         </b-field>
         
@@ -48,12 +51,15 @@
     data() {
       return{
         item: {
-          name: '',
+          name: "",
           expiryDate: [], 
           location: null
         },
         minDate: new Date()  
       }
+    },
+    mounted() {
+      this.item.name = this.$store.getters.getPurchaseName;
     },
     methods: {
       handleSubmit() {

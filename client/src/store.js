@@ -8,7 +8,10 @@ const store = new Vuex.Store({
   state:{
     status: "",
     user: {},
-    foods: []
+    foods: [],
+    purchaseName: "",
+    finished: 0,
+    expired: 0
   },
   mutations:{
     auth_request(state){
@@ -27,19 +30,40 @@ const store = new Vuex.Store({
       state.foods = []
     },
     get_food(state,foods){
-      state.foods = foods
+      state.foods = foods; 
+      if(state.finished === 0) state.finished = state.user.finished;
+      if(state.expired === 0) state.expired = state.user.expired + foods.filter(food =>{
+        const foodExpiry = new Date(food.expiryDate)
+        return food.location !== 'Shopping' && foodExpiry < new Date()
+      }).length;
+      console.log('state.finished', state.finished)
     },
     add_food(state,food){
       state.foods = [...state.foods, food];
+      state.purchaseName = "";
     },
     delete_food(state,id){
+      let removedFood = state.foods.filter(food => food._id === id)[0];
       state.foods = state.foods.filter(food => food._id !== id);
+      if(removedFood.location !== 'Shopping') {
+        let expiryDate = new Date(removedFood.expiryDate)
+        if(expiryDate >= new Date()) state.finished = state.finished  + 1;
+        else state.expired  = state.expired + 1;
+      }
+      console.log('finished food', state.finished)
+      console.log('expired food', state.expired)
     },
     update_food(state,id){
       let unchangedFoods = state.foods.filter(food => food._id !== id);
       let changedFood = state.foods.filter(food => food._id === id)[0];
       changedFood.location = "Shopping"
       state.foods = [...unchangedFoods, changedFood]
+      let expiryDate = new Date(changedFood.expiryDate)
+      if(expiryDate >= new Date()) state.finished = state.finished  + 1;
+      else state.expired = state.expired + 1;
+    },
+    purchase_food(state,name){
+      state.purchaseName = name
     }
   },
   actions: {
@@ -167,6 +191,12 @@ const store = new Vuex.Store({
           reject(err)
         })
       })
+    },
+    purchaseFood({commit}, name){
+      console.log('purchase food', name)
+      commit('purchase_food',name)
+      console.log('purchase food', this.state.purchaseName)
+      return this.state.purchaseName
     }
   },
   getters: {
@@ -176,9 +206,11 @@ const store = new Vuex.Store({
       const aTime = new Date(a.expiryDate);
       const bTime = new Date(b.expiryDate);
       return aTime-bTime;
-    })
-
-    
+    }),
+    getPurchaseName: state => state.purchaseName,
+    getUser: state => state.user,
+    getFinished: state => state.finished,
+    getExpired: state => state.expired,
   }
 })
 

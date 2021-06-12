@@ -6,8 +6,8 @@
     </div>
       
     <div class="columns is-centered">
-      <ShoppingTable :items="items" @remove:item="removeItem"/>
-    </div>
+      <ShoppingTable :items="items" @remove:item="removeItem" @purchase:item="purchaseItem"/>
+    </div>    
   </div>
 </template>
 
@@ -31,6 +31,7 @@ export default {
     }
   },
   mounted(){
+    this.$store.dispatch('purchaseFood', '')
     this.$store.dispatch('getFoods')
       .then(() => {
         this.items = this.$store.getters.getFoods.filter(food =>{
@@ -48,8 +49,17 @@ export default {
         )
     },
     removeItem(item) {
-      this.items.splice(this.items.indexOf(item),1),
-      localStorage.setItem('shoppingList', JSON.stringify(this.items))
+      let removed = this.items.splice(this.items.indexOf(item),1);
+      let id = removed[0]._id;
+      this.$store.dispatch('deleteFood', id)
+    },
+    purchaseItem(item) {
+      console.log(item)
+      this.$store.dispatch('purchaseFood', item.name)
+      let removed = this.items.splice(this.items.indexOf(item),1);
+      let id = removed[0]._id;
+      this.$store.dispatch('deleteFood', id)
+      this.$router.push('/')
     }
   }
 }

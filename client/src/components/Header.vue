@@ -16,7 +16,7 @@
               <b-navbar-item  tag="router-link" :to="{ path: '/shopping' }">
                   Shopping List
               </b-navbar-item>
-              <b-navbar-item href="#">
+              <b-navbar-item tag="router-link" :to="{ path: '/stats' }">
                   Stats
               </b-navbar-item>
               <b-navbar-item  @click="logout">

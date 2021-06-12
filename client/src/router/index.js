@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import ShoppingList from '../components/ShoppingList.vue';
 import ExpiryTracker from '../components/ExpiryTracker.vue';
+import Stats from '../components/Stats.vue';
 import Login from '../components/Login.vue';
 import SignUp from '../components/SignUp.vue';
 
@@ -21,6 +22,14 @@ const routes = [
     path: "/shopping",
     name: "ShoppingList",
     component: ShoppingList,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: "/stats",
+    name: "Stats",
+    component: Stats,
     meta: {
       requiresAuth: true
     }
