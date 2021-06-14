@@ -15,7 +15,7 @@ const passport = require('./config/passport');
 app.use(session({ secret: 'kirby ate everything', resave: true, saveUninitialized: true }));
 
 app.use(cors({
-  origin: 'http://food-lifesaver.herokuapp.com/',
+  origin: 'https://food-lifesaver.herokuapp.com/',
   credentials: true
 }));
 
@@ -26,7 +26,7 @@ app.use(passport.session());
 require('dotenv').config();
 
 app.use(function(req, res, next) {  
-  res.header('Access-Control-Allow-Origin', 'http://food-lifesaver.herokuapp.com/');
+  res.header('Access-Control-Allow-Origin', 'https://food-lifesaver.herokuapp.com/');
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.header( 'Access-Control-Allow-Credentials',true);
   next();
