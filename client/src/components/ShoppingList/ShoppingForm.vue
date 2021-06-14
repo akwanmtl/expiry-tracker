@@ -1,8 +1,17 @@
 <template>
   <div id="shopping-form"  class="column is-half">
     <form @submit.prevent="handleSubmit">
-      <input v-model="item.name" type="text" />
-      <button>Add</button>
+      <div class="field has-addons">
+      <div class="control  is-expanded">
+        <input class="input is-primary" v-model="item.name" type="text" />
+      </div>
+          
+      <div class="control">
+        <button class="button is-info">
+          Add
+        </button>
+      </div>
+      </div>
     </form>
   </div>
 </template>
@@ -14,7 +23,9 @@
       return{
         item: {
           name: '',
-        },
+          expiryDate: new Date(),
+          location: 'Shopping'
+        },  
       }
     },
     methods: {
@@ -23,6 +34,8 @@
           this.$emit('add:item', this.item)
           this.item = {
             name: '',
+            expiryDate: new Date(),
+            location: 'Shopping'
           }
         }
       },

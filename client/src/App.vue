@@ -1,19 +1,18 @@
 <template>
   <div id="app">
     <Header />
-    <ShoppingList msg="Welcome to Your Vue.js App"/>
+    <div class="fill-height">
+      <router-view />
+    </div>
   </div>
 </template>
 
 <script>
 import Header from './components/Header.vue'
-import ShoppingList from './components/ShoppingList.vue'
-
 
 export default {
   name: 'App',
   components: {
-    ShoppingList, 
     Header
   }
 }
@@ -30,6 +29,10 @@ export default {
 
 body{
   min-height: 100vh;
-  background-color:mistyrose;
+  background-color:#33CC66;
+}
+
+.fill-height {
+  min-height: 100vh;
 }
 </style>
