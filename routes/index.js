@@ -9,9 +9,7 @@ router.use("/api", apiRoutes);
 // Auth Routes
 router.use("/auth", authRoutes);
 
-router.use((req,res)=>{
-  console.log("error 404");
-  res.redirect("/")
-})
-
+router.use(function(req, res) {
+  res.sendFile(path.join(__dirname, "/../client/dist/build/index.html"));
+});
 module.exports = router;
