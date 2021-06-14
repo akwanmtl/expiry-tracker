@@ -10,6 +10,6 @@ router.use("/api", apiRoutes);
 router.use("/auth", authRoutes);
 
 router.use(function(req, res) {
-  res.sendFile(path.join(__dirname, "/../client/dist/build/index.html"));
+  res.sendFile(path.join(__dirname, "/../client/dist/index.html"));
 });
 module.exports = router;

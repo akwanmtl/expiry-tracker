@@ -56,8 +56,7 @@ app.use(express.json());
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
-  console.log('production')
-  app.use(express.static(path.join(__dirname, "/client/dist/build/index.html")));
+  app.use(express.static("client/dist"));
 }
 // Add routes, both API and view
 app.use(routes);
