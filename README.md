@@ -1,4 +1,4 @@
-# Expiry-Tracker
+# Food LifeSaver
 
 ## Description
 This application is an Expiry Tracker and a Shopping List Application built using MongoDB, Express, Vue and Node. Buefy is the CSS Framework.
@@ -15,7 +15,20 @@ This application is an Expiry Tracker and a Shopping List Application built usin
 
 ## Usage 
 
-Login is required. Once logged in, you can start tracking your food items to make sure that they don't expire. There is also a shopping list feature. Once you finish a food item, you can either remove it from the expiry list or add it to your shopping cart. There is also a simple stats page to show your status.  
+Here is a demo of the application:
+
+![Food Lifesaver walkthrough](./assets/expiry_tracker.gif)
+
+
+When you first land on the page, you are welcome with a simple landing page. Login is required to gain access to Food Lifesaver. 
+
+![Food Lifesaver Landing](./assets/welcome.png)
+
+Once logged in, you can start tracking your food items to make sure that they don't expire. 
+
+![Food Lifesaver Expiry Tracker](./assets/expiry.png)
+
+There is also a shopping list feature. Once you finish a food item, you can either remove it from the expiry list or add it to your shopping cart. There is also a simple stats page to show you how much food you have wasted vs finished.  
 
 ## Credits
 * [License badge link](https://gist.github.com/lukas-h/2a5d00690736b4c3a7ba)
