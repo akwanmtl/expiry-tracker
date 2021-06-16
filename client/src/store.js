@@ -4,8 +4,8 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-const BASE_URL = 'http://localhost:3001/';
-// const BASE_URL = 'https://food-lifesaver.herokuapp.com/'
+// const BASE_URL = 'http://localhost:3001/';
+const BASE_URL = 'https://food-lifesaver.herokuapp.com/'
 
 const store = new Vuex.Store({
   state:{
@@ -60,7 +60,6 @@ const store = new Vuex.Store({
         today.setHours(0,0,0,0)
         if(foodExpiry >= today) state.finished = state.finished  + 1;
         else state.expired  = state.expired + 1;
-        console.log(state.finished, state.expired)
       }
     },
     update_food(state,id){

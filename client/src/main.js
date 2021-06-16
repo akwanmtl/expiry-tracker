@@ -21,11 +21,9 @@ router.beforeEach((to, from, next) =>{
   const requiresGuest = to.matched.some(route => route.meta.guest)
   if(requiresAuth) {
     if(!store.getters.isLoggedIn) {
-      console.log('not logged in', store.state.user)
       next('/welcome')
     }
     else{
-      console.log('logged in', store.state.user)
       next()
       return
     }
