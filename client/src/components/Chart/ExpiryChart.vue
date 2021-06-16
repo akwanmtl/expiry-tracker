@@ -3,7 +3,7 @@ import { Doughnut } from 'vue-chartjs'
 
 export default {
   extends: Doughnut,
-  props: ['finishedItems','expiredItems','chartOptions'],
+  props: ['finishedItems','expiredItems'],
   mounted(){
     this.renderPieChart();
   },
@@ -14,10 +14,11 @@ export default {
   },
   methods: {
     renderPieChart: function() {
-      console.log('rendering pie chart', this.data)
-      this.renderChart(
-        {
-          labels:[
+      let options = {
+        hoverBorderWidth: 20
+      }
+      let tempdata = {
+         labels:[
             'Finished',
             'Expired'
           ],
@@ -30,21 +31,26 @@ export default {
             ],
             hoverOffset: 4
           }]
-        }, 
-        this.chartOptions
-      )
+      };
+      if(!this.data[0] && !this.data[1]) {
+        tempdata = {
+          labels: ["No data"],
+          datasets: [{
+            labels:'No data',
+            backgroundColor: ['#D3D3D3'],
+            data: [100]
+          }]
+        }
+      }
+      this.renderChart(tempdata, options)
     }
   },
   watch: {
-    finishedItems(newData, oldData) {
-      console.log('compare: ', newData)
-      console.log('old: ', oldData)
+    finishedItems() {
       this.renderPieChart();
     },
     
-    expiredItems(newData, oldData) {
-      console.log('compare: ', newData)
-      console.log('old: ', oldData)
+    expiredItems() {
       this.renderPieChart();
     }
   }

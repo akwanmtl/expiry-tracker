@@ -8,7 +8,6 @@ module.exports = {
     db.User.find({username: req.user.username})
       .populate("foods")
       .then(dbUser =>{
-        console.log(dbUser[0].foods)
         res.json(dbUser[0].foods)
       })
     }
@@ -22,8 +21,6 @@ module.exports = {
     db.Food
       .create(req.body.item)
       .then((dbFood) => {
-        console.log('added', dbFood)
-        console.log(req.user.username)
         db.User
           .findOneAndUpdate({username: req.user.username}, {$push: { foods: dbFood._id} }, {new: true})
           .then(dbUser =>{
@@ -53,7 +50,6 @@ module.exports = {
         db.User
         .findOneAndUpdate({username: req.user.username}, option, {new: true})
         .then(dbUser =>{
-          console.log('modified', dbUser)
           res.json(dbUser);
         })
       })
@@ -70,8 +66,11 @@ module.exports = {
         $pull: { foods: req.params.id}
       }
       if(dbModel.location !== "Shopping"){
-        const foodExpiry = new Date(dbModel.expiryDate);
-        if(foodExpiry >= new Date()){
+        let foodExpiry = new Date(dbModel.expiryDate);
+        foodExpiry.setHours(0,0,0,0);
+        let today = new Date();
+        today.setHours(0,0,0,0)
+        if(foodExpiry >= today){
           option.$inc = { "finished": 1}
         }
         else{
@@ -132,8 +131,6 @@ module.exports = {
       catch(err){
         res.status(401).send('Error occurred')
       }
-      // db.User.create(req.body)
-      // .then(data => res.json(data));
       
     })
   }
