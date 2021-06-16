@@ -80,19 +80,25 @@
           let password2 = this.password2;
 
           if(password === password2){
-            this.$store.dispatch('signup', { username, password })
-              .then((response) => {
-                if(response.data === "User already exists") {
-                  this.errorMsg = 'User Already Exists'
-                }
-                else{
-                  return this.$router.push('/login')
-                }
-              })
-              .catch(err => {
-                console.log(err);
-                this.errorMsg = 'Something Went Wrong'
-              })
+            let re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+            if(re.test(password)){
+              this.$store.dispatch('signup', { username, password })
+                .then((response) => {
+                  if(response.data === "User already exists") {
+                    this.errorMsg = 'User Already Exists'
+                  }
+                  else{
+                    return this.$router.push('/login')
+                  }
+                })
+                .catch(err => {
+                  console.log(err);
+                  this.errorMsg = 'Something Went Wrong'
+                })
+            }
+            else{
+              this.errorMsg = 'Password must be 8 characters long, contain at least one Uppercase character, one number and one special character.'
+            }
           }
           else{
             this.errorMsg = 'Password And Confirm Password Do Not Match'

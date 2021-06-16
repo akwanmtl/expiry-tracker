@@ -57,10 +57,8 @@ export default {
       let removed = this.items.splice(this.items.indexOf(item),1);
       let id = removed[0]._id;
       this.$store.dispatch('deleteFood', id)
-      console.log(id)
     },
     addToCart(item) {
-      console.log(item)
       let removed = this.items.splice(this.items.indexOf(item),1);
       this.$store.dispatch('updateFood', removed[0])
     }

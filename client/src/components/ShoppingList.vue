@@ -54,7 +54,6 @@ export default {
       this.$store.dispatch('deleteFood', id)
     },
     purchaseItem(item) {
-      console.log(item)
       this.$store.dispatch('purchaseFood', item.name)
       let removed = this.items.splice(this.items.indexOf(item),1);
       let id = removed[0]._id;

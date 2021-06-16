@@ -4,6 +4,9 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
+const BASE_URL = 'http://localhost:3001/';
+// const BASE_URL = 'https://food-lifesaver.herokuapp.com/'
+
 const store = new Vuex.Store({
   state:{
     status: "",
@@ -25,44 +28,52 @@ const store = new Vuex.Store({
       state.status = 'error'
     },
     logout(state){
-      state.status = '',
-      state.user = {},
+      state.status = ''
+      state.user = {}
       state.foods = []
+      state.purchaseName= ""
+      state.finished = 0
+      state.expired = 0
     },
     get_food(state,foods){
       if(state.foods.length === 0) state.foods = foods; 
       if(state.finished === 0) state.finished = state.user.finished;
       if(state.expired === 0) state.expired = state.user.expired + foods.filter(food =>{
-        const foodExpiry = new Date(food.expiryDate)
-        return food.location !== 'Shopping' && foodExpiry < new Date()
+        let foodExpiry = new Date(food.expiryDate);
+        foodExpiry.setHours(0,0,0,0);
+        let today = new Date();
+        today.setHours(0,0,0,0)
+        return food.location !== 'Shopping' && foodExpiry < today
       }).length;
     },
     add_food(state,food){
       state.foods = [...state.foods, food];
       state.purchaseName = "";
-      console.log(state.foods)
     },
     delete_food(state,id){
       let removedFood = state.foods.filter(food => food._id === id)[0];
       state.foods = state.foods.filter(food => food._id !== id);
       if(removedFood.location !== 'Shopping') {
-        let expiryDate = new Date(removedFood.expiryDate)
-        if(expiryDate >= new Date()) state.finished = state.finished  + 1;
+        let foodExpiry = new Date(removedFood.expiryDate);
+        foodExpiry.setHours(0,0,0,0);
+        let today = new Date();
+        today.setHours(0,0,0,0)
+        if(foodExpiry >= today) state.finished = state.finished  + 1;
         else state.expired  = state.expired + 1;
+        console.log(state.finished, state.expired)
       }
     },
     update_food(state,id){
-      console.log(state.foods, id)
       let unchangedFoods = state.foods.filter(food => food._id !== id);
       let changedFood = state.foods.filter(food => food._id === id)[0];
-      console.log('changed', changedFood)
       changedFood.location = "Shopping"
       state.foods = [...unchangedFoods, changedFood]
-      let expiryDate = new Date(changedFood.expiryDate)
-      if(expiryDate >= new Date()) state.finished = state.finished  + 1;
+      let foodExpiry = new Date(changedFood.expiryDate);
+      foodExpiry.setHours(0,0,0,0);
+      let today = new Date();
+      today.setHours(0,0,0,0)
+      if(foodExpiry >= today) state.finished = state.finished  + 1;
       else state.expired = state.expired + 1;
-      console.log('finished food', state.finished)
-      console.log('expired food', state.expired)
     },
     purchase_food(state,name){
       state.purchaseName = name
@@ -72,10 +83,9 @@ const store = new Vuex.Store({
     login({commit}, user){
       return new Promise((resolve, reject) => {
         commit('auth_request')
-        axios({url: 'https://food-lifesaver.herokuapp.com/auth/login', data: user, method: 'POST' , withCredentials: true, credentials: 'include' })
+        axios({url: `${BASE_URL}auth/login`, data: user, method: 'POST' , withCredentials: true, credentials: 'include' })
         .then(response => {
           const user = response.data
-          console.log(user.foods)
           commit('auth_success', user)
           resolve(response)
         })
@@ -88,7 +98,7 @@ const store = new Vuex.Store({
     getUser({commit}){
       return new Promise((resolve, reject) => {
         commit('auth_request')
-        axios({url: 'https://food-lifesaver.herokuapp.com/auth/user', method: 'GET' , withCredentials: true, credentials: 'include'})
+        axios({url: `${BASE_URL}auth/user`, method: 'GET' , withCredentials: true, credentials: 'include'})
         .then(response => {
           const user = response.data
           commit('auth_success', user)
@@ -103,8 +113,7 @@ const store = new Vuex.Store({
     signup({commit}, user){
       return new Promise((resolve, reject) => {
         commit('auth_request')
-        console.log(user)
-        axios({url: 'https://food-lifesaver.herokuapp.com/auth/signup', data: user, method: 'POST' , withCredentials: true, credentials: 'include'})
+        axios({url: `${BASE_URL}auth/signup`, data: user, method: 'POST' , withCredentials: true, credentials: 'include'})
         .then(response => {
           const user = response.data
           commit('auth_success', user)
@@ -119,19 +128,16 @@ const store = new Vuex.Store({
     logout({commit}){
       return new Promise((resolve) => {
         commit('logout')
-        axios({url: 'https://food-lifesaver.herokuapp.com/auth/logout', method: 'GET' , withCredentials: true, credentials: 'include'})
-        console.log('logout')
+        axios({url: `${BASE_URL}auth/logout`, method: 'GET' , withCredentials: true, credentials: 'include'})
         resolve()
       })
     },
     getFoods({commit}) {
       commit('auth_request')
-      console.log('trying to get food')
       return new Promise((resolve, reject) => {
-        axios({url: 'https://food-lifesaver.herokuapp.com/api/food', method: 'GET' , withCredentials: true, credentials: 'include'})
+        axios({url: `${BASE_URL}api/food`, method: 'GET' , withCredentials: true, credentials: 'include'})
         .then(response => {
           const foods = response.data
-          console.log(foods)
           commit('get_food', foods)
           resolve(response)
         })
@@ -143,9 +149,8 @@ const store = new Vuex.Store({
     },
     addFood({commit}, food) {
       commit('auth_request')
-      console.log('adding food', food)
       return new Promise((resolve, reject) => {
-        axios({url: 'https://food-lifesaver.herokuapp.com/api/food', data: food, method: 'POST' , withCredentials: true, credentials: 'include'})
+        axios({url: `${BASE_URL}api/food`, data: food, method: 'POST' , withCredentials: true, credentials: 'include'})
         .then(response => {
           const food = response.data
           commit('add_food', food)
@@ -160,7 +165,7 @@ const store = new Vuex.Store({
     deleteFood({commit}, id) {
       commit('auth_request')
       return new Promise((resolve, reject) => {
-        axios({url: 'https://food-lifesaver.herokuapp.com/api/food/'+id, method: 'DELETE' , withCredentials: true, credentials: 'include'})
+        axios({url: `${BASE_URL}api/food/${id}`, method: 'DELETE' , withCredentials: true, credentials: 'include'})
         .then(response => {
           commit('delete_food', id)
           resolve(response)
@@ -176,7 +181,7 @@ const store = new Vuex.Store({
       let foodExpiry = new Date(food.expiryDate);
       let expired = (foodExpiry < new Date());
       return new Promise((resolve, reject) => {
-        axios({url: 'https://food-lifesaver.herokuapp.com/api/food/'+food._id, data: {location: "Shopping", expiryDate: new Date(), expired: expired}, method: 'PUT' , withCredentials: true, credentials: 'include'})
+        axios({url: `${BASE_URL}api/food/${food._id}`, data: {location: "Shopping", expiryDate: new Date(), expired: expired}, method: 'PUT' , withCredentials: true, credentials: 'include'})
         .then(response => {
           commit('update_food', food._id)
           resolve(response)
