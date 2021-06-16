@@ -1,7 +1,7 @@
 # Food LifeSaver
 
 ## Description
-This application is an Expiry Tracker and a Shopping List Application built using MongoDB, Express, Vue and Node. Buefy is the CSS Framework.
+This application is an Expiry Tracker and a Shopping List Application built using MongoDB, Express, Vue and Node. Buefy is the CSS Framework. The motivation behind this project is primary to learn how to use the Vue.JS framework. In addition, I always wanted to address the problem of remembering what foods I have. 
 
 * Link to the app on Heroku: https://food-lifesaver.herokuapp.com/
 * Link to the Github repository: https://github.com/akwanmtl/expiry-tracker
